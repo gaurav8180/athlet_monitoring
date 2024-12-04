@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .stat {
+            margin: 10px 0;
+        }
+        .stat strong {
+            display: inline-block;
+            width: 200px;
+            font-weight: bold;
+        }
+        .alerts ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .alerts ul li {
+            background: #ffcccc;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 5px solid #ff0000;
+            border-radius: 4px;
+        }
+        .no-alerts {
+            background: #d4edda;
+            padding: 10px;
+            border-left: 5px solid #28a745;
+            border-radius: 4px;
+        }
+        .raw-data {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .raw-data th, .raw-data td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+        }
+        .raw-data th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Monitoring Results</h1>
+        {% if stats %}
+            <div class="stat">
+                <strong>Average Heart Rate:</strong> {{ stats.avg_heart_rate }} BPM
+            </div>
+            <div class="stat">
+                <strong>Maximum Heart Rate:</strong> {{ stats.max_heart_rate }} BPM
+            </div>
+            <div class="stat">
+                <strong>Total Steps:</strong> {{ stats.total_steps }}
+            </div>
+            <div class="stat">
+                <strong>Total Calories Burned:</strong> {{ stats.calories_burned }} kcal
+            </div>
+            <div class="stat">
+                <strong>Distance Traveled:</strong> {{ stats.distance_traveled_km }} km
+            </div>
+            <div class="stat">
+                <strong>Activity Duration:</strong> {{ stats.activity_duration }} minutes
+            </div>
+            <div class="stat">
+                <strong>Sleep Duration:</strong> {{ stats.sleep_duration_hours }} hours
+            </div>
+            <div class="stat">
+                <strong>Heart Rate Variance:</strong> {{ stats.heart_rate_variance }}
+            </div>
+            
+            <h2>Alerts</h2>
+            <div class="alerts">
+                {% if alerts %}
+                    <ul>
+                        {% for alert in alerts %}
+                            <li>{{ alert.message }} (Value: {{ alert.value }} BPM)</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="no-alerts">No alerts detected during the monitoring session.</p>
+                {% endif %}
+            </div>
+            
+            <h2>Raw Data</h2>
+            <table class="raw-data">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Heart Rate (BPM)</th>
+                        <th>Steps</th>
+                        <th>Calories (kcal)</th>
+                        <th>Distance (m)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in raw_data %}
+                        <tr>
+                            <td>{{ data.timestamp }}</td>
+                            <td>{{ data.heart_rate }}</td>
+                            <td>{{ data.steps }}</td>
+                            <td>{{ data.calories }}</td>
+                            <td>{{ data.distance }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

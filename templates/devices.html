@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Available Devices</title>
+</head>
+<body>
+    <h1>Scanned Devices</h1>
+    <form method="POST" action="/connect">
+        {% if devices %}
+            <ul>
+                {% for device in devices %}
+                <li>
+                    {{ device.name }} ({{ device.address }})
+                    <button name="device_address" value="{{ device.address }}">Connect</button>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No devices found.</p>
+        {% endif %}
+    </form>
+</body>
+</html>
